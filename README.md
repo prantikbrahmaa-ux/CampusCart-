@@ -26,5 +26,4 @@ To create a functional marketplace that students can test and use.
 
 ---
 
-Built with ambition for campus communities. 💙# CampusCart-
-CampusCart is a student-focused campus marketplace that connects student sellers and buyers through a simple, accessible web platform.
+Built with ambition for campus communities. 
