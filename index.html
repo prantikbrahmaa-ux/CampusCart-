@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusCart | Your Campus, Your Marketplace</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f8fc;
+      color: #172033;
+    }
+    header {
+      background: white;
+      padding: 18px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .logo { font-size: 23px; font-weight: bold; color: #2355d6; }
+    .hero {
+      padding: 55px 7% 45px;
+      text-align: center;
+      background: #eaf0ff;
+    }
+    .hero h1 { font-size: 38px; margin: 10px 0; }
+    .hero p { color: #526078; line-height: 1.6; }
+    .search {
+      display: flex;
+      max-width: 500px;
+      margin: 24px auto 0;
+      gap: 8px;
+    }
+    input {
+      min-width: 0;
+      flex: 1;
+      padding: 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    button {
+      border: 0;
+      background: #2355d6;
+      color: white;
+      padding: 12px 17px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    main { padding: 30px 6%; }
+    .section-title { margin-bottom: 18px; }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 15px;
+    }
+    .card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 17px;
+    }
+    .product-icon {
+      background: #eef2ff;
+      border-radius: 10px;
+      padding: 22px 5px;
+      text-align: center;
+      font-size: 38px;
+    }
+    .card h3 { font-size: 16px; margin-bottom: 7px; }
+    .price { font-weight: bold; color: #2355d6; }
+    .seller { color: #64748b; font-size: 12px; }
+    .card button { width: 100%; margin-top: 10px; }
+    .empty { color: #64748b; grid-column: 1 / -1; }
+    .sell {
+      margin-top: 35px;
+      padding: 25px;
+      border-radius: 14px;
+      background: #172b58;
+      color: white;
+      text-align: center;
+    }
+    .sell p { color: #dbe5ff; line-height: 1.5; }
+    .sell button { background: white; color: #172b58; }
+    footer {
+      padding: 22px;
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+    }
+    @media (max-width: 400px) {
+      .hero h1 { font-size: 30px; }
+      .search { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">🛒 CampusCart</div>
+    <button onclick="document.getElementById('sell').scrollIntoView({behavior:'smooth'})">
+      Become a Seller
+    </button>
+  </header>
+
+  <section class="hero">
+    <h1>Your Campus, Your Marketplace.</h1>
+    <p>Discover products. Connect with student sellers.<br>Keep campus commerce in one place.</p>
+    <div class="search">
+      <input id="searchInput" type="search" placeholder="Search products...">
+      <button onclick="searchProducts()">Search</button>
+    </div>
+  </section>
+
+  <main>
+    <h2 class="section-title">Explore Campus Products</h2>
+    <div class="products" id="products">
+      <div class="card" data-name="notebooks stationery">
+        <div class="product-icon">📚</div>
+        <h3>Study Essentials</h3>
+        <p class="price">Sample listing</p>
+        <p class="seller">Example category</p>
+        <button onclick="requestItem('Study Essentials')">I'm Interested</button>
+      </div>
+      <div class="card" data-name="calculator electronics">
+        <div class="product-icon">🧮</div>
+        <h3>Calculators</h3>
+        <p class="price">Sample listing</p>
+        <p class="seller">Example category</p>
+        <button onclick="requestItem('Calculators')">I'm Interested</button>
+      </div>
+      <div class="card" data-name="bags accessories">
+        <div class="product-icon">🎒</div>
+        <h3>Bags & Accessories</h3>
+        <p class="price">Sample listing</p>
+        <p class="seller">Example category</p>
+        <button onclick="requestItem('Bags & Accessories')">I'm Interested</button>
+      </div>
+    </div>
+
+    <section class="sell" id="sell">
+      <h2>Have something to sell?</h2>
+      <p>CampusCart is being built for students, by students.<br>Seller registration is coming soon.</p>
+      <button onclick="alert('Seller registration is coming soon!')">Start Selling</button>
+    </section>
+  </main>
+
+  <footer>CampusCart · Built for campus communities 💙</footer>
+
+  <script>
+    function searchProducts() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.card[data-name]');
+      let found = 0;
+      cards.forEach(card => {
+        const matches = card.dataset.name.includes(query) ||
+          card.innerText.toLowerCase().includes(query);
+        card.style.display = matches ? '' : 'none';
+        if (matches) found++;
+      });
+      let message = document.getElementById('noResults');
+      if (!message) {
+        message = document.createElement('p');
+        message.id = 'noResults';
+        message.className = 'empty';
+        document.getElementById('products').appendChild(message);
+      }
+      message.textContent = found ? '' : 'No matching products found. Try another search.';
+      message.style.display = found ? 'none' : 'block';
+    }
+    document.getElementById('searchInput').addEventListener('keydown', event => {
+      if (event.key === 'Enter') searchProducts();
+    });
+    function requestItem(name) {
+      alert('"' + name + '" is a demo listing. Real product requests will be added in a future version.');
+    }
+  </script>
+</body>
+</html>
